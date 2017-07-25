@@ -1,14 +1,23 @@
 
-Starting Nmap 7.40 ( https://nmap.org ) at 2017-06-04 02:38 EDT
+Starting Nmap 6.47 ( http://nmap.org ) at 2017-06-09 00:10 EDT
 Nmap scan report for 192.168.0.1
-Host is up (0.0032s latency).
-MAC Address: 3C:7A:8A:F3:DB:F7 (Arris Group)
+Host is up (0.0063s latency).
+MAC Address: 3C:7A:8A:F3:DB:F7 (Unknown)
 Nmap scan report for 192.168.0.2
-Host is up (0.067s latency).
-MAC Address: AC:37:43:A0:07:55 (HTC)
-Nmap scan report for 192.168.0.5
-Host is up (0.061s latency).
-MAC Address: 54:60:09:B4:8F:10 (Google)
+Host is up (0.11s latency).
+MAC Address: AC:37:43:A0:07:55 (Unknown)
 Nmap scan report for 192.168.0.4
+Host is up (0.11s latency).
+MAC Address: A0:99:9B:1C:2D:4B (Unknown)
+Nmap scan report for 192.168.0.5
+Host is up (0.097s latency).
+MAC Address: 54:60:09:B4:8F:10 (Unknown)
+Nmap scan report for 192.168.0.6
+Host is up (0.050s latency).
+MAC Address: E4:58:E7:E5:AC:42 (Unknown)
+Nmap scan report for 192.168.0.8
+Host is up (0.11s latency).
+MAC Address: E4:3E:D7:32:51:52 (Unknown)
+Nmap scan report for 192.168.0.9
 Host is up.
-Nmap done: 256 IP addresses (4 hosts up) scanned in 4.85 seconds
+Nmap done: 256 IP addresses (7 hosts up) scanned in 105.55 seconds
