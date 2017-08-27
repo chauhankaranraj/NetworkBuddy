@@ -1,3 +1,5 @@
+from apscheduler.schedulers.background import BackgroundScheduler
+from apscheduler.schedulers import SchedulerAlreadyRunningError, SchedulerNotRunningError
 import GPIOUtils
 import ScannerUtils
 import tkinter as tk
@@ -30,6 +32,9 @@ class Application(tk.Frame):
         self.pack(fill=tk.X, expand=1)
 
         self.createWidgets()
+
+        self.scanScheduler = BackgroundScheduler()
+        self.scanScheduler.add_job(self.singleScan, 'interval', minutes=30)
 
 
     def createWidgets(self):
@@ -66,14 +71,26 @@ class Application(tk.Frame):
 
 
     def startMonitoring(self):
+        try:
+            self.scanScheduler.start()
+        except SchedulerAlreadyRunningError:
+            print('Already monitoring continuously')
+
         return
 
 
     def stopMonitoring(self):
+        try:
+            self.scanScheduler.pause()
+        except SchedulerNotRunningError:
+            print('Already not monitoring continuously')
+
         return
 
 
     def singleScan(self):
+
+        print('scanning...')
 
         # get MACs of devices on network
         self.receivedMacs = ScannerUtils.getMacAddresses()
@@ -106,6 +123,9 @@ class Application(tk.Frame):
             print('performing tasks for', mac)
             # TODO: actually perform tasks!
 
+    # TODO
+    def modifyTask(self):
+        return
 
 
 if __name__=='__main__':
