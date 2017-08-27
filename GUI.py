@@ -33,7 +33,7 @@ class Application(tk.Frame):
 
         self.createWidgets()
 
-        self.scanScheduler = BackgroundScheduler()
+        self.scanScheduler = BackgroundScheduler()  # scheduler to scan at regular intervals (30 minutes)
         self.scanScheduler.add_job(self.singleScan, 'interval', minutes=30)
 
 
@@ -71,26 +71,30 @@ class Application(tk.Frame):
 
 
     def startMonitoring(self):
+        """
+        Set up the system to scan the network on regular intervals (30 minutes)
+        """
         try:
             self.scanScheduler.start()
         except SchedulerAlreadyRunningError:
             print('Already monitoring continuously')
 
-        return
-
 
     def stopMonitoring(self):
+        """
+        Stop the system from scanning the network on regular intervals (30 minutes)
+        :return: 
+        """
         try:
             self.scanScheduler.pause()
         except SchedulerNotRunningError:
             print('Already not monitoring continuously')
 
-        return
-
 
     def singleScan(self):
-
-        print('scanning...')
+        """
+        Run a scan on the network, just once
+        """
 
         # get MACs of devices on network
         self.receivedMacs = ScannerUtils.getMacAddresses()
