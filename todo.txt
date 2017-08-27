@@ -1,2 +1,42 @@
 Phase 1. Create basic network monitoring system, for pure security purposes. Implement TaskScheduler? Intensity of LED/buzzer dependent on number of unknown devices?
 Phase 2. Expand monitoring for registered people, perform tasks for people if detected after long time (say, 1 hour) and during daytime hours. Implement run.py and arg parser for user?
+
+old code for inspiration:
+
+peopleInfo = [{'id':0, 'mac':'3C:7A:8A:F3:DB:F7', 'device':'Arris Group', 'person':'anand'},
+              {'id': 1, 'mac': 'AC:FD:CE:00:D2:87', 'device': 'Intel Corporate', 'person': 'vijay'},
+              {'id': 2, 'mac': 'asfasf', 'device': 'Intel asfa', 'person': 'rushi'}]
+
+suspicious = []
+macFound = False
+
+# while True:
+#     for macAddress in currentScanMacAddresses:
+#         for personInfo in peopleInfo:
+#             if personInfo['mac'] == macAddress:
+#                 if personInfo['person'] == 'anand': anandEnter()
+#                 elif personInfo['person'] == 'vijay': vijayEnter()
+#                 macFound = True
+#         if not macFound:
+#             suspicious.append(macAddress)
+
+# def anandEnter():
+#     GPIO.output(4, True)    # red led
+#
+# def anandExit():
+#     GPIO.output(4, False)    # red led
+#
+# def vijayEnter():
+#     GPIO.output(5, True)    # green led
+#
+# def vijayExit():
+#     GPIO.output(5, False)    # green led
+
+# def actionMac(mac):
+#     for personInfo in peopleInfo:
+#         if personInfo[mac] in currentScanMacAddresses:
+#             if personInfo['person'] == 'anand': anandEnter()
+#             elif personInfo['person'] == 'vijay': vijayEnter()
+#         else:
+#             if personInfo['person'] == 'anand': anandExit()
+#             elif personInfo['person'] == 'vijay': vijayExit()
