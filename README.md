@@ -9,4 +9,4 @@ Functions
 ------------
 NetworkBuddy scans the local network either periodically or just once, for two primary functions:
 1. To determine if there are any suspicious/unknown devices (based on mac address), and alert the user by lighting up an LED and/or sounding a buzzer
-2. To perform tasks assigned by each registered user, if that user is connected to the network
+2. To perform tasks (such as turning on lights/fan/AC, reading out personalized todo list, reading out messages left by other people, etc) assigned by each registered user, if that user is connected to the network
