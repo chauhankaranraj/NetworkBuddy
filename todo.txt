@@ -1,0 +1,2 @@
+Phase 1. Create basic network monitoring system, for pure security purposes. Implement TaskScheduler? Intensity of LED/buzzer dependent on number of unknown devices?
+Phase 2. Expand monitoring for registered people, perform tasks for people if detected after long time (say, 1 hour) and during daytime hours. Implement run.py and arg parser for user?

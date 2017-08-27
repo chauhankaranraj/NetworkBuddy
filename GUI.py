@@ -1,19 +1,31 @@
-import GPIOcontrol
-import MacScanner
+import GPIOUtils
+import ScannerUtils
 import tkinter as tk
+
 
 class Application(tk.Frame):
 
-    def __init__(self, master):
+
+    def __init__(self, master, ledPin=4, buzzerPin=5):
         super(Application, self).__init__(master = master)
+
+        self.ledPin = ledPin
+        self.buzzerPin = buzzerPin
+
+        GPIOUtils.setAsOutputPin(self.ledPin)
+        GPIOUtils.setAsOutputPin(self.ledPin)
+        GPIOUtils.setOutputLowOnPin(self.ledPin)
+        GPIOUtils.setOutputLowOnPin(self.ledPin)
 
         self.receivedMacs = []
         self.validMacs = {'3C:7A:8A:F3:DB:F7 Arris Group', 'AC:37:43:A0:07:55 HTC', '76:40:29:64:AF:00 Hooli'}
 
         self.grid()
         self.grid_rowconfigure(5, weight=1)
+        
         for i in range(1, 4):
             self.grid_columnconfigure(i, weight=1)
+            
         self.pack_propagate(0)
         self.pack(fill=tk.X, expand=1)
 
@@ -21,8 +33,9 @@ class Application(tk.Frame):
 
 
     def createWidgets(self):
-        self.startmBtn = tk.Button(self, text='Start Monitoring', command=self.startMonitoring).grid(row=1, column=1, padx=2, sticky=tk.E)
-        self.stopmBtn = tk.Button(self, text='Stop Monitoring', command=self.stopMonitoring).grid(row=1, column=2)
+
+        self.startMonitorBtn = tk.Button(self, text='Start Monitoring', command=self.startMonitoring).grid(row=1, column=1, padx=2, sticky=tk.E)
+        self.stopMonitorBtn = tk.Button(self, text='Stop Monitoring', command=self.stopMonitoring).grid(row=1, column=2)
         self.singleScanBtn = tk.Button(self, text='Single Scan', command=self.singleScan).grid(row=1, column=3, sticky=tk.W)
 
         self.validMacsLbl = tk.Label(self, text='Connected devices MAC addresses:', fg='blue').grid(row=3, column=2, pady=5, sticky=tk.NSEW)
@@ -30,8 +43,6 @@ class Application(tk.Frame):
 
         self.suspMacsLbl = tk.Label(self, text='Suspicious MAC addresses:', fg='red').grid(row=9, column=2, sticky=tk.NSEW)
         self.suspMacsListbox = tk.Listbox(self, selectmode=tk.SINGLE)
-
-        # self.populateValidInvalidListboxes()
 
         self.validMacsListbox.grid(row=5, column=1, columnspan=3, padx=5, sticky=tk.NSEW)
         self.suspMacsListbox.grid(row=10, column=1, columnspan=3, padx=5, sticky=tk.NSEW)
@@ -41,8 +52,12 @@ class Application(tk.Frame):
 
 
     def populateValidInvalidListboxes(self):
+
+        # delete everything from both listboxes
         self.validMacsListbox.delete(0, tk.END)
         self.suspMacsListbox.delete(0,tk.END)
+
+        # iterate through MACs of all devices on network, then identify as trusted or suspicious, then display in corresponding listbox
         for mac in self.receivedMacs:
             if mac in self.validMacs:
                 self.validMacsListbox.insert(tk.END, mac)
@@ -59,28 +74,46 @@ class Application(tk.Frame):
 
 
     def singleScan(self):
-        self.receivedMacs = MacScanner.getMacAddresses()
+
+        # get MACs of devices on network
+        self.receivedMacs = ScannerUtils.getMacAddresses()
+
+        # classify as safe/dangerous and populate corresponding listboxes
         self.populateValidInvalidListboxes()
-        GPIOcontrol.processPresentMacs(self.validMacsListbox.get(0, tk.END))
-        return
+
+        # perform appropriate actions (LED/buzzer) according to MACs present
+        self.processReceivedMacs()
 
 
     def addToValidMacs(self):
+
+        # add the selected device to valid mac addresses list
         self.validMacs.add(self.suspMacsListbox.get(tk.ACTIVE))
+
+        # re-classify and populate listboxes
         self.populateValidInvalidListboxes()
 
 
-    def modifyTask(self):
-        return
+    def processReceivedMacs(self):
+
+        # if there are any suspicious mac addresses then turn on led and sound the buzzer
+        if len(self.suspMacsListbox.get(0, tk.END)) != 0:
+            GPIOUtils.setOutputHighOnPin(self.ledPin)
+            GPIOUtils.setOutputHighOnPin(self.buzzerPin)
+
+        # perform personalized task for each registered user, according to valid macs
+        for mac in self.validMacsListbox.get(0, tk.END):
+            print('performing tasks for', mac)
+            # TODO: actually perform tasks!
 
 
 
+if __name__=='__main__':
 
+    root = tk.Tk()
+    root.title('NetworkBuddy')
+    root.geometry('500x500')
+    root.resizable(width=False, height=False)
 
-root = tk.Tk()
-root.title('NetworkBuddy')
-root.geometry('500x500')    #500x250
-root.resizable(width=False, height=False)
-
-app = Application(master=root)
-app.mainloop()
+    app = Application(master=root)
+    app.mainloop()
